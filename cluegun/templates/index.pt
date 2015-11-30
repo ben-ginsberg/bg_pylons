@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <head>
+    <title>ClueGun pastebin</title>
+    <link rel="stylesheet" type="text/css"
+          href="${application_url}/static/styles.css" />
+  </head>
+  <body>
+    <div id="main">
+
+      <div class="header">ClueGun ${version} by <a
+         href="http://repoze.org" >Agendaless Consulting</a> (based on ClueBin by <a
+         href="http://www.serverzen.com">ServerZen Software</a>).
+      </div>
+      <div class="message" tal:condition="message|nothing"
+           tal:content="message">Error message</div>
+
+      <div class="userinfo" tal:condition="user">
+          You are currently logged in as <b>${user}</b>
+          <a href="${application_url}/logout">Log Out</a>
+      </div>
+
+      <div class="left">
+
+        <form action="." method="POST">
+          <input type="hidden" name="form.submitted"/>
+          <fieldset>
+            <legend>Paste Info</legend>
+            <div class="field">
+              <label for="author_name">Name</label>
+              <input type="text" name="author_name" value="${author_name}" />
+            </div>
+            <div class="field">
+              <label for="language">Language</label>
+              <select name="language">
+                <option value="" selected="selected">-- Auto detect --</option>
+                <option tal:repeat="lexer lexers"
+                        value="${lexer.alias}" 
+                        >${lexer.name}</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="paste">Paste Text</label>
+              <textarea name="paste">${paste}</textarea>
+            </div>
+            <input type="submit" />
+          </fieldset>
+        </form>
+
+      </div>
+
+      <div class="right" tal:condition="pastes">
+        <fieldset>
+          <legend>Previous Pastes</legend>
+          <ul>
+            <li tal:repeat="paste pastes">
+              <a href="${paste.url}"
+                 >${paste.author} on ${paste.date}</a>
+            </li>
+          </ul>
+        </fieldset>
+      </div>
+      
+      <div class="clear">
+
+      </div>
+    </div>
+  </body>
+</html>
